@@ -1,6 +1,14 @@
 from rest_framework import serializers
 
-from theatre.models import Actor, Genre, Play, TheatreHall
+from theatre.models import (
+    Actor,
+    Genre,
+    Play,
+    TheatreHall,
+    Performance,
+    Ticket,
+    Reservation
+)
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -55,3 +63,100 @@ class PlaySerializer(serializers.ModelSerializer):
     class Meta:
         model = Play
         fields = ("id", "title", "description", "genre_ids", "actor_ids")
+
+
+class PlayTitleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Play
+        fields = ("id", "title")
+
+
+
+class PerformanceListSerializer(serializers.ModelSerializer):
+    play_title = serializers.CharField(source="play.title", read_only=True)
+    theatre_hall_name = serializers.CharField(source="theatre_hall.name", read_only=True)
+    theatre_hall_capacity = serializers.IntegerField(source="theatre_hall.capacity", read_only=True)
+
+    class Meta:
+        model = Performance
+        fields = (
+            "id",
+            "play_title",
+            "theatre_hall_name",
+            "theatre_hall_capacity",
+            "show_time",
+        )
+
+
+class PerformanceDetailSerializer(serializers.ModelSerializer):
+    play = PlayTitleSerializer(read_only=True)
+    theatre_hall = TheatreHallSerializer(read_only=True)
+    tickets_available = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Performance
+        fields = (
+            "id",
+            "play",
+            "theatre_hall",
+            "show_time",
+            "tickets_available",
+        )
+
+    def get_tickets_available(self, obj):
+        return obj.theatre_hall.capacity - obj.tickets.count()
+
+
+class PerformanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Performance
+        fields = ("id", "play", "theatre_hall", "show_time")
+
+
+class TicketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ticket
+        fields = ("id", "row", "seat", "performance")
+
+
+class TicketListSerializer(TicketSerializer):
+    performance = PerformanceListSerializer(read_only=True)
+
+
+class TicketCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ticket
+        fields = ("row", "seat", "performance")
+
+
+class ReservationSerializer(serializers.ModelSerializer):
+    tickets = TicketSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Reservation
+        fields = ("id", "created_at", "tickets")
+
+
+class ReservationListSerializer(serializers.ModelSerializer):
+    tickets = TicketListSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Reservation
+        fields = ("id", "created_at", "tickets")
+
+
+class ReservationCreateSerializer(serializers.ModelSerializer):
+    tickets = TicketCreateSerializer(many=True, allow_empty=False)
+
+    class Meta:
+        model = Reservation
+        fields = ("id", "tickets")
+
+    def create(self, validated_data):
+        tickets_data = validated_data.pop("tickets")
+        reservation = Reservation.objects.create(user=self.context["request"].user)
+
+        for ticket_data in tickets_data:
+            Ticket.objects.create(reservation=reservation, **ticket_data)
+
+        return reservation
