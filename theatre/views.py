@@ -1,5 +1,8 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import permissions, viewsets, filters
+from rest_framework import permissions, viewsets, filters, status
+from rest_framework.decorators import action
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.response import Response
 
 from theatre.models import (
     Actor,
@@ -22,6 +25,7 @@ from theatre.serializers import (
     ReservationCreateSerializer,
     ReservationListSerializer,
     ReservationSerializer,
+    PlayImageSerializer,
 )
 
 
@@ -57,7 +61,26 @@ class PlayViewSet(viewsets.ModelViewSet):
         if self.action == "retrieve":
             return PlayDetailSerializer
 
+        if self.action == "upload_image":
+            return PlayImageSerializer
+
         return PlaySerializer
+
+    @action(
+        methods=["POST"],
+        detail=True,
+        url_path="upload-image",
+        parser_classes=[MultiPartParser, FormParser],
+        permission_classes=[permissions.IsAuthenticated],
+    )
+    def upload_image(self, request, pk=None):
+        play = self.get_object()
+        serializer = self.get_serializer(play, data=request.data)
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class PerformanceViewSet(viewsets.ModelViewSet):
