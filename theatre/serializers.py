@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.core.exceptions import ValidationError as DjangoValidationError
 
 from theatre.models import (
     Actor,
@@ -128,6 +129,47 @@ class TicketCreateSerializer(serializers.ModelSerializer):
         model = Ticket
         fields = ("row", "seat", "performance")
 
+    def validate(self, attrs):
+        row = attrs["row"]
+        seat = attrs["seat"]
+        performance = attrs["performance"]
+        theatre_hall = performance.theatre_hall
+
+        if row < 1 or row > theatre_hall.rows:
+            raise serializers.ValidationError(
+                {
+                    "row": (
+                        f"Row number must be in available range: "
+                        f"1 to {theatre_hall.rows}"
+                    )
+                }
+            )
+
+        if seat < 1 or seat > theatre_hall.seats_in_row:
+            raise serializers.ValidationError(
+                {
+                    "seat": (
+                        f"Seat number must be in available range: "
+                        f"1 to {theatre_hall.seats_in_row}"
+                    )
+                }
+            )
+
+        if Ticket.objects.filter(
+            performance=performance,
+            row=row,
+            seat=seat,
+        ).exists():
+            raise serializers.ValidationError(
+                {
+                    "non_field_errors": [
+                        "This ticket has already been booked."
+                    ]
+                }
+            )
+
+        return attrs
+
 
 class ReservationSerializer(serializers.ModelSerializer):
     tickets = TicketSerializer(many=True, read_only=True)
@@ -151,6 +193,21 @@ class ReservationCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservation
         fields = ("id", "tickets")
+
+    def validate_tickets(self, value):
+        taken_places = set()
+
+        for ticket in value:
+            place = (ticket["performance"].id, ticket["row"], ticket["seat"])
+
+            if place in taken_places:
+                raise serializers.ValidationError(
+                    "Tickets must be unique for the same performance, row, and seat."
+                )
+
+            taken_places.add(place)
+
+        return value
 
     def create(self, validated_data):
         tickets_data = validated_data.pop("tickets")
