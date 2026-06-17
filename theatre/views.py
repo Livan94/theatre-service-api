@@ -1,4 +1,5 @@
-from rest_framework import permissions, viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import permissions, viewsets, filters
 
 from theatre.models import (
     Actor,
@@ -45,6 +46,9 @@ class TheatreHallViewSet(viewsets.ModelViewSet):
 class PlayViewSet(viewsets.ModelViewSet):
     queryset = Play.objects.prefetch_related("genres", "actors")
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ["genres", "actors"]
+    search_fields = ["title"]
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -61,6 +65,10 @@ class PerformanceViewSet(viewsets.ModelViewSet):
         "play", "theatre_hall"
     ).prefetch_related("tickets")
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_fields = ["play", "theatre_hall"]
+    ordering_fields = ["show_time"]
+    ordering = ["show_time"]
 
     def get_serializer_class(self):
         if self.action == "list":
