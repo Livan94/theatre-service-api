@@ -12,6 +12,7 @@ from theatre.models import (
     Reservation,
     TheatreHall
 )
+from theatre.permissions import IsAdminOrReadOnly
 from theatre.serializers import (
     ActorSerializer,
     GenreSerializer,
@@ -32,24 +33,21 @@ from theatre.serializers import (
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
+    permission_classes = [IsAdminOrReadOnly]
 
 class ActorViewSet(viewsets.ModelViewSet):
     queryset = Actor.objects.all()
     serializer_class = ActorSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
+    permission_classes = [IsAdminOrReadOnly]
 
 class TheatreHallViewSet(viewsets.ModelViewSet):
     queryset = TheatreHall.objects.all()
     serializer_class = TheatreHallSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
+    permission_classes = [IsAdminOrReadOnly]
 
 class PlayViewSet(viewsets.ModelViewSet):
     queryset = Play.objects.prefetch_related("genres", "actors")
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ["genres", "actors"]
     search_fields = ["title"]
@@ -71,7 +69,7 @@ class PlayViewSet(viewsets.ModelViewSet):
         detail=True,
         url_path="upload-image",
         parser_classes=[MultiPartParser, FormParser],
-        permission_classes=[permissions.IsAuthenticated],
+        permission_classes=[permissions.IsAdminUser],
     )
     def upload_image(self, request, pk=None):
         play = self.get_object()
@@ -87,7 +85,7 @@ class PerformanceViewSet(viewsets.ModelViewSet):
     queryset = Performance.objects.select_related(
         "play", "theatre_hall"
     ).prefetch_related("tickets")
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_fields = ["play", "theatre_hall"]
     ordering_fields = ["show_time"]
