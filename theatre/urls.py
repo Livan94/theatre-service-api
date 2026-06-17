@@ -1,4 +1,5 @@
-from rest_framework import routers
+from rest_framework import  permissions
+from rest_framework.routers import DefaultRouter
 
 from theatre.views import (
     ActorViewSet,
@@ -9,7 +10,14 @@ from theatre.views import (
     ReservationViewSet,
 )
 
-router = routers.DefaultRouter()
+class CustomDefaultRouter(DefaultRouter):
+    def get_api_root_view(self, api_urls=None):
+        api_root_view = super().get_api_root_view(api_urls=api_urls)
+        api_root_view.cls.permission_classes = [permissions.AllowAny]
+        return api_root_view
+
+
+router = CustomDefaultRouter()
 router.register("genres", GenreViewSet)
 router.register("actors", ActorViewSet)
 router.register("theatre-halls", TheatreHallViewSet)
