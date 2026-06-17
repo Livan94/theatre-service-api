@@ -161,6 +161,7 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "API for theatre management",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
+    "SERVE_PERMISSIONS": ["rest_framework.permissions.AllowAny"],
     "COMPONENT_SPLIT_REQUEST": True,
     "SECURITY": [{"BearerAuth": []}],
     "COMPONENTS": {
@@ -175,7 +176,14 @@ SPECTACULAR_SETTINGS = {
     "SWAGGER_UI_SETTINGS": {
         "persistAuthorization": True,
         "filter": True,
+        "displayRequestDuration": True,
+        "tryItOutEnabled": True,
     },
+    "TAGS": [
+        {"name": "User", "description": "Authentication and user management"},
+        {"name": "Theatre", "description": "Theatre domain resources"},
+        {"name": "Reservations", "description": "Reservation management"},
+    ],
 }
 
 SIMPLE_JWT = {
