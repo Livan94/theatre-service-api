@@ -142,6 +142,21 @@ SPECTACULAR_SETTINGS = {
     "TITLE": "Theatre Service API",
     "DESCRIPTION": "API for theatre management",
     "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SECURITY": [{"BearerAuth": []}],
+    "COMPONENTS": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+            }
+        }
+    },
+    "SWAGGER_UI_SETTINGS": {
+        "persistAuthorization": True,
+        "filter": True,
+    },
 }
 
 SIMPLE_JWT = {
