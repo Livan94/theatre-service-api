@@ -1,7 +1,11 @@
+import pathlib
+import uuid
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.utils.text import slugify
 
 
 class Genre(models.Model):
@@ -41,13 +45,24 @@ class TheatreHall(models.Model):
         return self.rows * self.seats_in_row
 
 
+def play_image_file_path(instance: "Play", filename: str) -> pathlib.Path:
+    file_name = (
+        f"{slugify(instance.title)}-{uuid.uuid4()}"
+        f"{pathlib.Path(filename).suffix}"
+    )
+    return pathlib.Path("uploads/plays/") / file_name
+
+
 class Play(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     actors = models.ManyToManyField(Actor, related_name="plays")
     genres = models.ManyToManyField(Genre, related_name="plays")
-    image = models.ImageField(null=True, blank=True, upload_to="uploads/plays/")
-
+    image = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to=play_image_file_path
+    )
     class Meta:
         ordering = ["title"]
 
