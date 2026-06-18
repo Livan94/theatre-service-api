@@ -30,7 +30,7 @@ Theatre Service API is a backend service for managing theatre content, performan
 ### 1. Clone the repository
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/Livan94/theatre-service-api.git
 cd theatre-service-api
 ```
 
@@ -87,7 +87,6 @@ docker compose up
 docker compose exec app python manage.py createsuperuser
 ```
 
-
 ## Demo Data
 
 The project includes ready demo data in:
@@ -103,6 +102,12 @@ This fixture is useful for quickly populating the database with sample:
 - theatre halls
 - plays
 - performances
+
+## Database Structure
+
+The database schema diagram is shown below:
+
+![Theatre database structure](assets/theatre_db.png)
 
 ## Documentation
 
