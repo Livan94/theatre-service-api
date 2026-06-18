@@ -26,3 +26,5 @@ router.register("performances", PerformanceViewSet)
 router.register("reservations", ReservationViewSet, basename="reservation")
 
 urlpatterns = router.urls
+
+app_name = "theatre"

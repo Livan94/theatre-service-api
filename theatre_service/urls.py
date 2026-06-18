@@ -26,7 +26,7 @@ from drf_spectacular.views import (
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/theatre/", include("theatre.urls")),
+    path("api/theatre/", include(("theatre.urls", "theatre"), namespace="theatre")),
     path("api/user/", include("user.urls")),
     # Swagger / Redoc
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
