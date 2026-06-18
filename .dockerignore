@@ -1,0 +1,13 @@
+.git/
+.gitignore
+.env
+.venv/
+venv/
+.idea/
+*.iml
+*.pyc
+**/__pycache__/
+.pytest_cache/
+*.sqlite3
+requirements-dev.txt
+media/
