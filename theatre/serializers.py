@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from django.core.exceptions import ValidationError as DjangoValidationError
 
 from theatre.models import (
     Actor,
@@ -8,7 +7,7 @@ from theatre.models import (
     TheatreHall,
     Performance,
     Ticket,
-    Reservation
+    Reservation,
 )
 
 
@@ -39,6 +38,7 @@ class PlayListSerializer(serializers.ModelSerializer):
         model = Play
         fields = ("id", "title")
 
+
 class PlayImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Play
@@ -56,19 +56,22 @@ class PlayDetailSerializer(serializers.ModelSerializer):
 
 class PlaySerializer(serializers.ModelSerializer):
     genre_ids = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=Genre.objects.all(),
-        source="genres"
+        many=True, queryset=Genre.objects.all(), source="genres"
     )
     actor_ids = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=Actor.objects.all(),
-        source="actors"
+        many=True, queryset=Actor.objects.all(), source="actors"
     )
 
     class Meta:
         model = Play
-        fields = ("id", "title", "description", "genre_ids", "actor_ids", "image")
+        fields = (
+            "id",
+            "title",
+            "description",
+            "genre_ids",
+            "actor_ids",
+            "image"
+        )
 
 
 class PlayTitleSerializer(serializers.ModelSerializer):
@@ -77,11 +80,14 @@ class PlayTitleSerializer(serializers.ModelSerializer):
         fields = ("id", "title")
 
 
-
 class PerformanceListSerializer(serializers.ModelSerializer):
     play_title = serializers.CharField(source="play.title", read_only=True)
-    theatre_hall_name = serializers.CharField(source="theatre_hall.name", read_only=True)
-    theatre_hall_capacity = serializers.IntegerField(source="theatre_hall.capacity", read_only=True)
+    theatre_hall_name = serializers.CharField(
+        source="theatre_hall.name", read_only=True
+    )
+    theatre_hall_capacity = serializers.IntegerField(
+        source="theatre_hall.capacity", read_only=True
+    )
 
     class Meta:
         model = Performance
@@ -166,11 +172,7 @@ class TicketCreateSerializer(serializers.ModelSerializer):
             seat=seat,
         ).exists():
             raise serializers.ValidationError(
-                {
-                    "non_field_errors": [
-                        "This ticket has already been booked."
-                    ]
-                }
+                {"non_field_errors": ["This ticket has already been booked."]}
             )
 
         return attrs
@@ -207,7 +209,8 @@ class ReservationCreateSerializer(serializers.ModelSerializer):
 
             if place in taken_places:
                 raise serializers.ValidationError(
-                    "Tickets must be unique for the same performance, row, and seat."
+                    "Tickets must be unique for the same performance, "
+                    "row, and seat."
                 )
 
             taken_places.add(place)
@@ -216,7 +219,9 @@ class ReservationCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         tickets_data = validated_data.pop("tickets")
-        reservation = Reservation.objects.create(user=self.context["request"].user)
+        reservation = Reservation.objects.create(
+            user=self.context["request"].user
+        )
 
         for ticket_data in tickets_data:
             Ticket.objects.create(reservation=reservation, **ticket_data)

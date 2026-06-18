@@ -32,7 +32,9 @@ class Actor(models.Model):
 class TheatreHall(models.Model):
     name = models.CharField(max_length=255, unique=True)
     rows = models.PositiveIntegerField(validators=[MinValueValidator(1)])
-    seats_in_row = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    seats_in_row = models.PositiveIntegerField(
+        validators=[MinValueValidator(1)]
+    )
 
     class Meta:
         ordering = ["name"]
@@ -63,6 +65,7 @@ class Play(models.Model):
         blank=True,
         upload_to=play_image_file_path
     )
+
     class Meta:
         ordering = ["title"]
 
@@ -142,7 +145,10 @@ class Ticket(models.Model):
             hall = self.performance.theatre_hall
             if self.row > hall.rows:
                 raise ValidationError(
-                    {"row": f"Row number must be in available range: 1 to {hall.rows}"}
+                    {
+                        "row": f"Row number must be in available range: 1 to "
+                               f"{hall.rows}"
+                    }
                 )
             if self.seat > hall.seats_in_row:
                 raise ValidationError(

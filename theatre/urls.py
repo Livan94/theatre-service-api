@@ -1,4 +1,4 @@
-from rest_framework import  permissions
+from rest_framework import permissions
 from rest_framework.routers import DefaultRouter
 
 from theatre.views import (
@@ -9,6 +9,7 @@ from theatre.views import (
     PerformanceViewSet,
     ReservationViewSet,
 )
+
 
 class CustomDefaultRouter(DefaultRouter):
     def get_api_root_view(self, api_urls=None):

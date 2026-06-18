@@ -154,7 +154,8 @@ class TheatreHallViewSet(viewsets.ModelViewSet):
 @extend_schema_view(
     list=extend_schema(
         summary="List plays",
-        description="Retrieve a list of plays with optional filtering and search.",
+        description="Retrieve a list of plays "
+                    "with optional filtering and search.",
         tags=["Theatre"],
         parameters=[
             OpenApiParameter(
@@ -256,7 +257,8 @@ class PlayViewSet(viewsets.ModelViewSet):
 @extend_schema_view(
     list=extend_schema(
         summary="List performances",
-        description="Retrieve a list of performances with filtering and ordering.",
+        description="Retrieve a list of performances "
+                    "with filtering and ordering.",
         tags=["Theatre"],
         parameters=[
             OpenApiParameter(
@@ -275,7 +277,8 @@ class PlayViewSet(viewsets.ModelViewSet):
                 name="ordering",
                 type=str,
                 location=OpenApiParameter.QUERY,
-                description="Order by show_time. Use `show_time` or `-show_time`.",
+                description="Order by show_time. "
+                            "Use `show_time` or `-show_time`.",
             ),
         ],
     ),
@@ -328,12 +331,14 @@ class PerformanceViewSet(viewsets.ModelViewSet):
 @extend_schema_view(
     list=extend_schema(
         summary="List my reservations",
-        description="Retrieve reservations created by the current authenticated user.",
+        description="Retrieve reservations created "
+                    "by the current authenticated user.",
         tags=["Reservations"],
     ),
     retrieve=extend_schema(
         summary="Retrieve my reservation",
-        description="Retrieve detailed information about one of the current user's reservations.",
+        description="Retrieve detailed information about one "
+                    "of the current user's reservations.",
         tags=["Reservations"],
     ),
     create=extend_schema(
@@ -368,7 +373,8 @@ class PerformanceViewSet(viewsets.ModelViewSet):
     ),
     partial_update=extend_schema(
         summary="Partially update reservation",
-        description="Partially update a reservation for the current authenticated user.",
+        description="Partially update a reservation "
+                    "for the current authenticated user.",
         tags=["Reservations"],
     ),
     destroy=extend_schema(
