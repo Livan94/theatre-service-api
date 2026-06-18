@@ -154,6 +154,8 @@ REST_FRAMEWORK = {
         "anon": "10/min",
         "user": "30/min",
     },
+    "DEFAULT_PAGINATION_CLASS": "theatre.pagination.TheatrePagination",
+    "PAGE_SIZE": 5,
 }
 
 SPECTACULAR_SETTINGS = {
