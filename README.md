@@ -25,35 +25,6 @@ Theatre Service API is a backend service for managing theatre content, performan
 - Simple JWT
 - Pillow
 
-## Project Structure
-
-```text
-theatre-service-api/
-├── theatre/
-│   ├── fixtures/
-│   │   └── theatre_service_data.json
-│   ├── tests/
-│   ├── admin.py
-│   ├── models.py
-│   ├── serializers.py
-│   ├── urls.py
-│   └── views.py
-├── user/
-│   ├── models.py
-│   ├── serializers.py
-│   ├── urls.py
-│   └── views.py
-├── theatre_service/
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
-├── manage.py
-├── requirements.txt
-├── Dockerfile
-├── docker-compose.yml
-└── .env-sample
-```
-
 ## Getting Started
 
 ### 1. Clone the repository
