@@ -34,7 +34,6 @@
       "name": "Historical"
     }
   },
-
   {
     "model": "theatre.actor",
     "pk": 1,
@@ -83,7 +82,6 @@
       "last_name": "Melnyk"
     }
   },
-
   {
     "model": "theatre.theatrehall",
     "pk": 1,
@@ -111,7 +109,6 @@
       "seats_in_row": 16
     }
   },
-
   {
     "model": "theatre.play",
     "pk": 1,
@@ -212,7 +209,6 @@
       "actors": [3, 5, 6]
     }
   },
-
   {
     "model": "theatre.performance",
     "pk": 1,
@@ -319,117 +315,6 @@
       "play": 3,
       "theatre_hall": 3,
       "show_time": "2026-07-01T18:30:00Z"
-    }
-  },
-
-  {
-    "model": "user.user",
-    "pk": 1,
-    "fields": {
-      "password": "pbkdf2_sha256$720000$dummy$dummyhashedpassword",
-      "last_login": null,
-      "is_superuser": false,
-      "first_name": "Demo",
-      "last_name": "UserOne",
-      "email": "demo1@example.com",
-      "is_staff": false,
-      "is_active": true,
-      "date_joined": "2026-06-01T10:00:00Z",
-      "groups": [],
-      "user_permissions": []
-    }
-  },
-  {
-    "model": "user.user",
-    "pk": 2,
-    "fields": {
-      "password": "pbkdf2_sha256$720000$dummy$dummyhashedpassword",
-      "last_login": null,
-      "is_superuser": false,
-      "first_name": "Demo",
-      "last_name": "UserTwo",
-      "email": "demo2@example.com",
-      "is_staff": false,
-      "is_active": true,
-      "date_joined": "2026-06-02T10:00:00Z",
-      "groups": [],
-      "user_permissions": []
-    }
-  },
-
-  {
-    "model": "theatre.reservation",
-    "pk": 1,
-    "fields": {
-      "created_at": "2026-06-15T10:00:00Z",
-      "user": 1
-    }
-  },
-  {
-    "model": "theatre.reservation",
-    "pk": 2,
-    "fields": {
-      "created_at": "2026-06-15T11:00:00Z",
-      "user": 2
-    }
-  },
-  {
-    "model": "theatre.reservation",
-    "pk": 3,
-    "fields": {
-      "created_at": "2026-06-15T12:00:00Z",
-      "user": 1
-    }
-  },
-
-  {
-    "model": "theatre.ticket",
-    "pk": 1,
-    "fields": {
-      "row": 1,
-      "seat": 1,
-      "performance": 1,
-      "reservation": 1
-    }
-  },
-  {
-    "model": "theatre.ticket",
-    "pk": 2,
-    "fields": {
-      "row": 1,
-      "seat": 2,
-      "performance": 1,
-      "reservation": 1
-    }
-  },
-  {
-    "model": "theatre.ticket",
-    "pk": 3,
-    "fields": {
-      "row": 2,
-      "seat": 3,
-      "performance": 2,
-      "reservation": 2
-    }
-  },
-  {
-    "model": "theatre.ticket",
-    "pk": 4,
-    "fields": {
-      "row": 3,
-      "seat": 4,
-      "performance": 3,
-      "reservation": 3
-    }
-  },
-  {
-    "model": "theatre.ticket",
-    "pk": 5,
-    "fields": {
-      "row": 4,
-      "seat": 5,
-      "performance": 4,
-      "reservation": 2
     }
   }
 ]
