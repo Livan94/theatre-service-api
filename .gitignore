@@ -9,5 +9,4 @@ venv/
 *.pyc
 *.sqlite3
 requirements-dev.txt
-theatre/fixtures
 media/
