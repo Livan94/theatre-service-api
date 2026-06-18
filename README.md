@@ -4,14 +4,14 @@ Theatre Service API is a backend service for managing theatre content, performan
 
 ## Features
 
-- Custom user model with registration and authenticated profile management
-- JWT authentication with token obtain, refresh, and verify endpoints
-- CRUD operations for genres, actors, plays, theatre halls, and performances
-- Reservation management for authenticated users
-- Interactive API documentation with Swagger UI and ReDoc
-- Ready-to-load demo data in `theatre/fixtures/theatre_service_data.json`
-- PostgreSQL-based persistent storage
-- Dockerized development environment
+- Custom user model with registration and authenticated profile management.
+- JWT authentication with token obtain, refresh, and verify endpoints.
+- CRUD operations for genres, actors, plays, theatre halls, and performances.
+- Reservation management for authenticated users.
+- Interactive API documentation with Swagger UI and ReDoc.
+- Ready-to-load demo data in `theatre/fixtures/theatre_service_data.json`.
+- PostgreSQL-based persistent storage.
+- Dockerized development environment.
 
 ## Tech Stack
 
@@ -57,13 +57,7 @@ python -m venv .venv
 .venv\Scripts\activate.bat
 ```
 
-### 3. Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Configure environment variables
+### 3. Configure environment variables
 
 Create a `.env` file from the sample:
 
@@ -80,49 +74,19 @@ Make sure the file contains the required variables, including:
 - `POSTGRES_HOST`
 - `POSTGRES_PORT`
 
-## Run with Docker Compose
-
-Build and start the containers:
+### 4. Build and start Docker containers
 
 ```bash
 docker compose build
 docker compose up
 ```
 
-Create a superuser:
+### 5. Create a superuser
 
 ```bash
 docker compose exec app python manage.py createsuperuser
 ```
 
-
-## Run without Docker
-
-Before running locally, make sure PostgreSQL is installed and running, and `.env` is configured for the local database, for example:
-
-```env
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5432
-```
-
-Then run:
-
-```bash
-python manage.py migrate
-python manage.py runserver
-```
-
-Create a superuser:
-
-```bash
-python manage.py createsuperuser
-```
-
-Load demo fixture data:
-
-```bash
-python manage.py loaddata theatre/fixtures/theatre_service_data.json
-```
 
 ## Demo Data
 
@@ -139,9 +103,6 @@ This fixture is useful for quickly populating the database with sample:
 - theatre halls
 - plays
 - performances
-- users
-- reservations
-- tickets
 
 ## Documentation
 
@@ -177,5 +138,3 @@ After the server starts, API documentation is available at:
 - Theatre catalogue endpoints such as genres, actors, theatre halls, plays, and performances are available through the theatre API router.
 - Reservation endpoints are intended for authenticated users.
 - Some create, update, and delete actions are restricted to admin users.
-
-
